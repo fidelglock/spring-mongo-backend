@@ -30,6 +30,8 @@ public class AppControl {
     @GetMapping("/findProduct/{productId}")
     public Optional<Product> findProduct(@PathVariable String productId) {
         System.out.println("*** Request received to find one Product ***");
+        if(repo.findById(productId)!=null) System.out.println("*PRODUCT EXISTS*");
+        else System.out.println(" **SOMETHING IS WRONG**");
         return repo.findById(productId);
     }
 
