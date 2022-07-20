@@ -29,8 +29,8 @@ public class AppControl {
 
     @GetMapping("/findProduct/{productId}")
     public Optional<Product> findProduct(@PathVariable String productId) {
-        System.out.println("*** Request received to find one Product ***");
-        if(repo.findById(productId)!=null) System.out.println("*PRODUCT EXISTS*");
+        System.out.println("*** Request received to find one Product with id= "+productId+" ***");
+        if(repo.findById(productId).isPresent()) System.out.println("*PRODUCT EXISTS*");
         else System.out.println(" **SOMETHING IS WRONG**");
         return repo.findById(productId);
     }
@@ -43,9 +43,10 @@ public class AppControl {
     }
 
     @PutMapping("/modifyProduct/{productId}")
-    public Product updateProduct(@RequestBody Product p) {
-        System.out.println("*** Request received to modify a Product ***");
-        if(repo.findById(p.getId())!=null) System.out.println("*PRODUCT EXISTS* - modifying values ..");
+    public Product updateProduct(@RequestBody Product p, @PathVariable String productId) {
+        System.out.println("*** Request received to modify a Product with id= "+productId+" ***");
+        if(p.getId()==null) p.setId(productId);
+        if(repo.findById(p.getId()).isPresent()) System.out.println("*PRODUCT EXISTS* - modifying values ..");
         else System.out.println(" **SOMETHING IS WRONG**");
         return repo.save(p);
     }
@@ -56,7 +57,7 @@ public class AppControl {
         try{
             Optional<Product> deleteProduct = null;
             deleteProduct = repo.findById(productId);
-            if (deleteProduct!=null){
+            if (deleteProduct.isPresent()){
                 repo.deleteById(productId);
                 return new ResponseEntity<>("Product has been removed ..", HttpStatus.OK);
             }
