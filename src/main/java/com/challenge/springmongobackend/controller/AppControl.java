@@ -15,18 +15,20 @@ public class AppControl {
     @Autowired
     DataRepository repo;
 
-
+    @CrossOrigin(origins = "*")
     @GetMapping("/")
     public ResponseEntity<String> home(){
         return new ResponseEntity<>("Spring Boot application connected to MongoDb Atlas..", HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/allProducts")
     public List<Product> allProducts() {
         System.out.println("*** Request received to view allProducts ***");
         return repo.findAll();
     }
 
+    @CrossOrigin(origins = "*")
     @GetMapping("/findProduct/{productId}")
     public Optional<Product> findProduct(@PathVariable String productId) {
         System.out.println("*** Request received to find one Product with id= "+productId+" ***");
@@ -35,6 +37,7 @@ public class AppControl {
         return repo.findById(productId);
     }
 
+    @CrossOrigin(origins = "*")
     @PostMapping("/addProduct")
     public ResponseEntity<String> addProduct(@RequestBody Product p){
         System.out.println("*** Request received to add a Product ***");
@@ -42,6 +45,7 @@ public class AppControl {
         return new ResponseEntity<>("Product has been added..", HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "*")
     @PutMapping("/modifyProduct/{productId}")
     public Product updateProduct(@RequestBody Product p, @PathVariable String productId) {
         System.out.println("*** Request received to modify a Product with id= "+productId+" ***");
@@ -51,6 +55,7 @@ public class AppControl {
         return repo.save(p);
     }
 
+    @CrossOrigin(origins = "*")
     @DeleteMapping("/removeProduct/{productId}")
     public ResponseEntity<String> deleteProduct(@PathVariable String productId) {
         System.out.println("*** Request received to delete a Product ***");
